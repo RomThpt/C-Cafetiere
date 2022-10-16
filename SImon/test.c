@@ -34,20 +34,34 @@ void mise_en_page(int *choice, bool status)
     {
         printf("\nCafetière eteinte\n");
         printf("Choisir le mode: ");
-        scanf("%d", &choice);
+        scanf("%d", &*choice);
         if (*choice == 1)
         {
-           allumer(&status) ;
+            allumer(&status);
         }
-        printf("\e[1;1H\e[2J");
-        mise_en_page(&choice, status);
+        else
+        {
+            printf("\e[1;1H\e[2J");
+            mise_en_page(&*choice, status);
+        }
     }
     else
     {
-        printf("\n");
+        printf("\n\n");
         printf("Choisir le mode: ");
         scanf("%d", &*choice);
+        switch (*choice)
+        {
+        case 1:
+            allumer(&status);
+            break;
+        case 2:
+            eteindre(&status);
+            break;
+        }
     }
+    printf("\e[1;1H\e[2J");
+    mise_en_page(&*choice, status);
 };
 
 int main(void)
@@ -55,18 +69,6 @@ int main(void)
     unsigned int choice = 0;
     bool status = false;
     mise_en_page(&choice, status);
-    printf("%d", status);
-    switch (choice)
-    {
-    case 1:
-        printf("%d", status);
-        allumer(&status);
-        printf("%d", status);
-        break;
-    case 2:
-        eteindre(&status);
-        break;
-    }
 
     return 0;
 }
