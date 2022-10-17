@@ -5,16 +5,19 @@
 
 void allumer(bool *status)
 {
+    /* Allumer la cafetière */
     *status = true;
 }
 
 void eteindre(bool *status)
 {
+    /* Eteindre la cafetière */
     *status = false;
 }
 
 void cafe_select(void)
 {
+    /* Interface de selection du café */
     unsigned int choice_cafe = 0;
     printf("1. Café Allongé\n");
     printf("2. Café fort\n");
@@ -33,9 +36,10 @@ void cafe_select(void)
 }
 
 int maintenance(unsigned int *stocks)
-{   
+{
+    /* Interface de la maintenance */
     unsigned int choice_maint = 0;
-    printf("\e[1;1H\e[2J");
+    printf("\e[1;1H\e[2J"); //clear le terminal
     printf("**********************************************\n");
     printf("*               MAINTENANCE                  *\n");
     printf("*                                            *\n");
@@ -45,36 +49,42 @@ int maintenance(unsigned int *stocks)
     printf("* 4.Quitter                                  *\n");
     printf("**********************************************\n");
     printf("Choisir le mode: ");
-    scanf("%d",&choice_maint);
-    switch(choice_maint){
-        case 1:
-            printf("Il reste %d doses de café", *stocks);
-            sleep(4);
-            break;
-        case 2:
-            printf("Combien de café voulez vous ajouter: ");
-            unsigned int temp = *stocks;
-            scanf("%d", &*stocks);
-            printf("Vous avez ajouter %d doses\n", *stocks);
-            *stocks += temp;
-            sleep(4);
-            break;
-        case 3:
-            sleep(0.1);
-        case 4:
-            return 0;
+    scanf("%d", &choice_maint);
+    switch (choice_maint)
+    {
+    case 1:
+        //affichage du nombre de doses qu'il reste
+        printf("Il reste %d doses de café", *stocks);
+        sleep(4);
+        break;
+    case 2:
+        //rajout de dose 
+        printf("Combien de café voulez vous ajouter: ");
+        unsigned int temp = *stocks;
+        scanf("%d", &*stocks);
+        printf("Vous avez ajouter %d doses\n", *stocks);
+        *stocks += temp;
+        sleep(4);
+        break;
+    case 3:
+        sleep(0.1);
+    case 4:
+         // On quitte la maintenance
+         return 0;
     }
-    maintenance(&*stocks);
+    maintenance(&*stocks);//retour sur le mode maintenance
 }
 
 int mise_en_page(int *choice, bool status, unsigned int *stocks)
 {
+    /* Interface de la page principale */
     printf("**********************************************\n");
     printf("* 1.Allumer la cafetière                     *\n");
     printf("* 2.Eteindre la cafetière                    *\n");
     printf("* 3.Choisir son café                         *\n");
     printf("* 4.Quitter                                  *\n");
     printf("* 5.Maintenance                              *\n");
+
     if (status)
     {
         printf("* Cafetière: ALLUMEE                         *\n");
@@ -96,7 +106,7 @@ int mise_en_page(int *choice, bool status, unsigned int *stocks)
         }
         else
         {
-            printf("\e[1;1H\e[2J");
+            printf("\e[1;1H\e[2J"); //clear le terminal
             mise_en_page(&*choice, status, &*stocks);
         }
     }
@@ -121,12 +131,13 @@ int mise_en_page(int *choice, bool status, unsigned int *stocks)
             maintenance(&*stocks);
         }
     }
-    printf("\e[1;1H\e[2J");
+    printf("\e[1;1H\e[2J"); //clear le terminal
     mise_en_page(&*choice, status, &*stocks);
 };
 
 int main(void)
-{
+{   
+    /* Fonction principale */
     unsigned int choice = 0;
     unsigned int stocks = 8;
     bool status = false;
